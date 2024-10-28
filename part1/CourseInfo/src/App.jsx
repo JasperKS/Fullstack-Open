@@ -1,45 +1,55 @@
-import { useState } from 'react';
+const Header = (props) => {
+  return (
+    <div>
+    <h1>{props.course}</h1>
+    </div>
+  )
+}
 
-const History = (props) => {
-  if (props.allClicks.length === 0) {
-    return <div>the app is used by pressing the buttons</div>;
-  }
-  return <div>button press history: {props.allClicks.join(' ')}</div>;
-};
+const Part = (props) => {
+  return (
+    <div>
+      <p>
+        {props.part} {props.exercise}
+      </p>
+    </div>
+  )
+}
 
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>{text}</button>
-);
+const Content = (props) => {
+  return (
+    <div>
+      <Part part={props.part[0]} exercise={props.part[0]}/>
+      <Part part={props.part[1]} exercise={props.part[1]}/>
+      <Part part={props.part[2]} exercise={props.part[2]}/>
+    </div>
+  )
+}
+
+const Total = (props) => {
+  return (
+    <div>
+      <p>Number of exercises {props.total}</p>
+    </div>
+  )
+}
 
 const App = () => {
-  const [left, setLeft] = useState(0);
-  const [right, setRight] = useState(0);
-  const [allClicks, setAll] = useState([]);
-  const [total, setTotal] = useState(0);
-
-  const handleLeftClick = () => {
-    setAll(allClicks.concat('L'));
-    const updatedLeft = left + 1;
-    setLeft(updatedLeft);
-    setTotal(updatedLeft + right);
-  };
-
-  const handleRightClick = () => {
-    setAll(allClicks.concat('R'));
-    const updatedRight = right + 1;
-    setRight(updatedRight);
-    setTotal(left + updatedRight);
-  };
+  const course = 'Half Stack application development'
+  const part1 = 'Fundamentals of React'
+  const exercises1 = 10
+  const part2 = 'Using props to pass data'
+  const exercises2 = 7
+  const part3 = 'State of a component'
+  const exercises3 = 14
 
   return (
     <div>
-      {left}
-      <Button handleClick={handleLeftClick} text="left" />
-      <Button handleClick={handleRightClick} text="right" />
-      {right}
-      <History allClicks={allClicks} />
+      <Header course={course}/>
+      <Content part={[part1,part2,part3]} exercise={[exercises1,exercises2,exercises3]}/>
+      <Total total={exercises1 + exercises2 + exercises3}/>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
