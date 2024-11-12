@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
@@ -12,12 +12,11 @@ const App = () => {
   const [filteredPeople, setFilteredPeople] = useState(persons);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
-  }, [])
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons(response.data);
+      setFilteredPeople(response.data);
+    });
+  }, []);
 
   const addName = (event) => {
     event.preventDefault();
@@ -60,9 +59,19 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filterPeople={filterPeople} handleFilter={handleFilter} searchInfo={searchInfo} />
+      <Filter
+        filterPeople={filterPeople}
+        handleFilter={handleFilter}
+        searchInfo={searchInfo}
+      />
       <h2>add a new</h2>
-      <PersonForm addName={addName} newName={newName} newNumber={newNumber} handleNewName={handleNewName} handleNewNumber={handleNewNumber} />
+      <PersonForm
+        addName={addName}
+        newName={newName}
+        newNumber={newNumber}
+        handleNewName={handleNewName}
+        handleNewNumber={handleNewNumber}
+      />
       <h2>Numbers</h2>
       <Persons filteredPeople={filteredPeople} />
       <div>debug: {newName}</div>
