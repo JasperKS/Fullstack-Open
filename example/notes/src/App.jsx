@@ -20,11 +20,18 @@ const App = () => {
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
-      id: notes.length + 1
     }
 
-    setNotes(notes.concat(noteObject));
-    setNewNote('a new note');
+    axios
+      .post('http://localhost:3001/notes', noteObject)
+      .then(response => {
+        setNotes(notes.concat(response.data));
+        setNewNote('');
+      })
+  }
+
+  const toggleImportanceOf = (id) => {
+    console.log('importance of ' + id + ' needs to be toggled');
   }
 
   const handleNoteChange = (event) => {
