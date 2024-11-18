@@ -3,6 +3,7 @@ import axios from "axios";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,10 +13,12 @@ const App = () => {
   const [filteredPeople, setFilteredPeople] = useState(persons);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
-      setFilteredPeople(response.data);
-    });
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+        setFilteredPeople(initialPersons)
+      })
   }, []);
 
   const addName = (event) => {
@@ -26,13 +29,22 @@ const App = () => {
       id: persons.length + 1,
     };
 
-    if (persons.some((person) => person.name == newName)) {
-      alert(`${newName} is already added to phonebook`);
-    } else {
-      setPersons(persons.concat(newPerson));
-      setNewName("");
-      setNewNumber("");
-    }
+    personService
+      .create(newPerson)
+      .then(returnedPerson => {
+        if (persons.some((person) => person.name == newName)) {
+          alert(`${newName} is already added to phonebook`);
+        } else {
+          const newPeople = persons.concat(returnedPerson);
+          setPersons(newPeople);
+          setFilteredPeople(newPeople);
+          setNewName("");
+          setNewNumber("");
+        }
+        
+      })
+
+    
   };
 
   const filterPeople = (event) => {
@@ -56,6 +68,10 @@ const App = () => {
     setSearchInfo(event.target.value);
   };
 
+  const deletePerson = (id) => {
+    console.log("delete id ", id)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -73,7 +89,7 @@ const App = () => {
         handleNewNumber={handleNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons filteredPeople={filteredPeople} />
+      <Persons filteredPeople={filteredPeople} deletePerson={deletePerson} />
       <div>debug: {newName}</div>
     </div>
   );
