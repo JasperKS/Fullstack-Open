@@ -26,26 +26,43 @@ const App = () => {
     const newPerson = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     };
 
-    personService
+    if (persons.some((person) => person.name == newName)) {
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+        console.log("update phone number")
+        personService
+          .update(id, newPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id === id ? returnedPerson : person))
+            setFilteredPeople(filterPeople.map(person => person.id === id ? returnedPerson : person))
+          })
+      }
+    } else {
+      personService
       .create(newPerson)
       .then(returnedPerson => {
-        if (persons.some((person) => person.name == newName)) {
-          alert(`${newName} is already added to phonebook`);
-        } else {
-          const newPeople = persons.concat(returnedPerson);
-          setPersons(newPeople);
-          setFilteredPeople(newPeople);
-          setNewName("");
-          setNewNumber("");
-        }
-        
+        const newPeople = persons.concat(returnedPerson);
+        setPersons(newPeople);
+        setFilteredPeople(newPeople);
       })
-
-    
+    }
+  setNewName("");
+  setNewNumber("");  
   };
+
+  const deletePerson = (id) => {
+    const person = persons.find(person => person.id === id)
+
+    if (window.confirm(`Do you really want to delete ${person.name}?`)){
+      personService
+      .del(id)
+      .then(returnedPerson => { 
+        setPersons(persons.filter(person => person.id != returnedPerson.id))
+        setFilteredPeople(filteredPeople.filter(person => person.id != returnedPerson.id))
+      })
+    }
+  }
 
   const filterPeople = (event) => {
     event.preventDefault();
@@ -67,10 +84,6 @@ const App = () => {
   const handleFilter = (event) => {
     setSearchInfo(event.target.value);
   };
-
-  const deletePerson = (id) => {
-    console.log("delete id ", id)
-  }
 
   return (
     <div>
