@@ -30,12 +30,14 @@ const App = () => {
 
     if (persons.some((person) => person.name == newName)) {
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
-        console.log("update phone number")
+        const existing = persons.find(person => person.name === newName)
+        const id = existing.id;
+        
         personService
           .update(id, newPerson)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id === id ? returnedPerson : person))
-            setFilteredPeople(filterPeople.map(person => person.id === id ? returnedPerson : person))
+            setFilteredPeople(filteredPeople.map(person => person.id === id ? returnedPerson : person))
           })
       }
     } else {
