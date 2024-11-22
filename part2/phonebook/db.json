@@ -1,34 +1,9 @@
 {
   "persons": [
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": "4"
-    },
-    {
-      "id": "7fd4",
-      "name": "Shawn Spencer",
-      "number": "01-23-456789"
-    },
-    {
-      "id": "2934",
-      "name": "Burton Guster",
-      "number": "01-23-4567890"
-    },
-    {
-      "id": "7",
-      "name": "Mary Lightly",
-      "number": "09-87-654321"
-    },
-    {
       "name": "Arto Hellas",
       "number": "09-45-67890",
       "id": "3afd"
-    },
-    {
-      "name": "Port Number",
-      "number": "01-23-4567890",
-      "id": "6dc5"
     }
   ]
 }
