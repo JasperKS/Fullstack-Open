@@ -11,6 +11,10 @@ const Countries = ({ filteredCountries }) => {
         return (
             <>Too many matches</>
         )
+    } else if (filteredCountries.length === 1) {
+        return (
+            <>Okay lang</>
+        )
     } else {
         return (
             <>

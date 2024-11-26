@@ -18,9 +18,11 @@ function App() {
 
   const findCountry = (event) => {
     event.preventDefault();
-    const filtered = countries.filter(country => country.name.common.includes(searchCountry))
+    const filtered = countries.filter(country => 
+      country.name.common.toLowerCase().includes(searchCountry.toLowerCase()))
+    console.log(filtered)
     setFilteredCountries(filtered)
-    console.log(filteredCountries);
+    
   }
   
   const handleFindCountry = (event) => {
