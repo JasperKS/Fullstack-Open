@@ -20,10 +20,16 @@ function App() {
     event.preventDefault();
     const filtered = countries.filter(country => 
       country.name.common.toLowerCase().includes(searchCountry.toLowerCase()))
-    console.log(filtered)
     setFilteredCountries(filtered)
     
   }
+
+  const toggleShowOf = (id) => {
+    const filtered = filteredCountries.filter(country => country.name.official === id);
+    setFilteredCountries(filtered);
+
+  }
+
   
   const handleFindCountry = (event) => {
     setSearchCountry(event.target.value);
@@ -36,7 +42,7 @@ function App() {
         handleFindCountry={handleFindCountry}
         findCountry={findCountry}
       />
-      <Countries filteredCountries={filteredCountries}/>
+      <Countries filteredCountries={filteredCountries} toggleShowOf={toggleShowOf}/>
     </>
   )
 }

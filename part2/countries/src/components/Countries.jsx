@@ -1,8 +1,9 @@
-const Country = ({ country }) => {
+const Country = ({ country, toggleShow }) => {
     return (
-        <li>
-            {country.name.common}
-        </li>
+        <div>
+            {country.name.common} {' '}
+            <button onClick={toggleShow}>show</button>
+        </div>
     )
 }
 
@@ -15,7 +16,7 @@ const Language = ({ language }) => {
 }
 
 
-const Countries = ({ filteredCountries }) => {
+const Countries = ({ filteredCountries, toggleShowOf }) => {
     if (filteredCountries.length > 10) {
         return (
             <>Too many matches</>
@@ -34,17 +35,15 @@ const Countries = ({ filteredCountries }) => {
                     <Language key={i} language={lang}/>)}
                 </ul>
             </div>
-            <img src={country.flags.png} alt={country.flags.alt}></img>
+            <div><img src={country.flags.png} alt={country.flags.alt}></img></div>
             </>
         )
     } else {
         return (
             <>
-                <ul>
-                    {filteredCountries.map(country => 
-                        <Country key={country.name.official} country={country}/>
-                    )}
-                </ul>
+                {filteredCountries.map(country => 
+                    <Country key={country.name.official} country={country} toggleShow={() => toggleShowOf(country.name.official)}/>
+                )}
             </>
         )
     }
