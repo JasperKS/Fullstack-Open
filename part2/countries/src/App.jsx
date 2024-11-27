@@ -37,7 +37,6 @@ function App() {
         findCountry={findCountry}
       />
       <Countries filteredCountries={filteredCountries}/>
-      <div>debug: {searchCountry}</div>
     </>
   )
 }
