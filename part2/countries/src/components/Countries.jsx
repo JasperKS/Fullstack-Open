@@ -1,3 +1,6 @@
+import weatherService from '../services/weather.js';
+import { useState } from 'react';
+
 const Country = ({ country, toggleShow }) => {
     return (
         <div>
@@ -17,12 +20,22 @@ const Language = ({ language }) => {
 
 
 const Countries = ({ filteredCountries, toggleShowOf }) => {
+    const [capitalWeather, setCapitalWeather] = useState(null);
     if (filteredCountries.length > 10) {
         return (
             <>Too many matches</>
         )
     } else if (filteredCountries.length === 1) {
         const country = filteredCountries[0];
+        const lat = country.capitalInfo.latlng[0];
+        const lon = country.capitalInfo.latlng[1];
+
+        weatherService
+            .getWeather(lat, lon)
+            .then(weatherInfo => { 
+                setCapitalWeather(weatherInfo)
+            })
+
         return (
             <>
             <h2>{country.name.common}</h2>
@@ -36,6 +49,7 @@ const Countries = ({ filteredCountries, toggleShowOf }) => {
                 </ul>
             </div>
             <div><img src={country.flags.png} alt={country.flags.alt}></img></div>
+            <h3>Weather in {country.capital}</h3>
             </>
         )
     } else {
