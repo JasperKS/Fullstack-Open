@@ -82,9 +82,13 @@ const App = () => {
     if (window.confirm(`Do you really want to delete ${person.name}?`)){
       personService
       .del(id)
-      .then(returnedPerson => { 
-        setPersons(persons.filter(person => person.id != returnedPerson.id))
-        setFilteredPeople(filteredPeople.filter(person => person.id != returnedPerson.id))
+      .then(() => { 
+        setPersons(persons.filter(p => person.id != p.id))
+        setFilteredPeople(filteredPeople.filter(p => person.id != p.id))
+        setNotif(`Deleted ${person.name}'s number`)
+            setTimeout(() => {
+              setNotif(null)
+            }, 5000)
       })
     }
   }
