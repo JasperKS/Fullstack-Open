@@ -6,11 +6,11 @@ const Person = ({ person, deletePerson }) => {
     )
 }
 
-const Persons = ({ filteredPeople, deletePerson }) => {
+const Persons = ({ people, deletePerson }) => {
     return (
         <>
             <ul>
-            {filteredPeople.map((person) => (
+            {people.map((person) => (
             <Person key={person.id} person={person} deletePerson={() => deletePerson(person.id)} />
             ))}
             </ul>

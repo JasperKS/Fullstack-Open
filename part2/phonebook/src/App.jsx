@@ -10,17 +10,15 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [searchInfo, setSearchInfo] = useState("");
-  const [filteredPeople, setFilteredPeople] = useState(persons);
   const [notif, setNotif] = useState(null);
   const [success, setSuccess] = useState(true);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     personService
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons)
-        setFilteredPeople(initialPersons)
       })
   }, []);
 
@@ -40,7 +38,6 @@ const App = () => {
           .update(id, newPerson)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id === id ? returnedPerson : person))
-            setFilteredPeople(filteredPeople.map(person => person.id === id ? returnedPerson : person))
             setSuccess(true);
             setNotif(`Updated ${returnedPerson.name}'s number`)
             setTimeout(() => {
@@ -54,7 +51,6 @@ const App = () => {
               setNotif(null)
             }, 5000)
             setPersons(persons.filter(person => person.id !== id))
-            setFilteredPeople(filteredPeople.filter(person => person.id !== id))
           })
 
       }
@@ -64,7 +60,6 @@ const App = () => {
       .then(returnedPerson => {
         const newPeople = persons.concat(returnedPerson);
         setPersons(newPeople);
-        setFilteredPeople(newPeople);
         setSuccess(true);
         setNotif(`Added ${returnedPerson.name}`)
         setTimeout(() => {
@@ -84,7 +79,6 @@ const App = () => {
       .del(id)
       .then(() => { 
         setPersons(persons.filter(p => person.id != p.id))
-        setFilteredPeople(filteredPeople.filter(p => person.id != p.id))
         setNotif(`Deleted ${person.name}'s number`)
             setTimeout(() => {
               setNotif(null)
@@ -93,46 +87,30 @@ const App = () => {
     }
   }
 
-  const filterPeople = (event) => {
-    event.preventDefault();
-    const filtered = persons.filter((person) =>
-      person.name.toLowerCase().includes(searchInfo.toLowerCase())
-    );
-    setFilteredPeople(filtered);
-    setSearchInfo("");
-  };
-
-  const handleNewName = (event) => {
-    setNewName(event.target.value);
-  };
+  const filterField = 
+    p => p.name.toLowerCase().includes(filter.toLowerCase())
+  
+  const personsToShow = filter ? persons.filter(filterField) : persons
 
   const handleNewNumber = (event) => {
     setNewNumber(event.target.value);
-  };
-
-  const handleFilter = (event) => {
-    setSearchInfo(event.target.value);
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
       <Notification message={notif} success={success}/>
-      <Filter
-        filterPeople={filterPeople}
-        handleFilter={handleFilter}
-        searchInfo={searchInfo}
-      />
+      <Filter filter={filter} setFilter={setFilter}/>
       <h2>add a new</h2>
       <PersonForm
         addName={addName}
         newName={newName}
         newNumber={newNumber}
-        handleNewName={handleNewName}
+        setNewName={setNewName}
         handleNewNumber={handleNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons filteredPeople={filteredPeople} deletePerson={deletePerson} />
+      <Persons people={personsToShow} deletePerson={deletePerson} />
       <div>debug: {newName}</div>
     </div>
   );

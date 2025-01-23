@@ -1,13 +1,9 @@
-const Filter = ({ filterPeople, searchInfo, handleFilter }) => {
+const Filter = ( {filter, setFilter} ) => {
     return (
-        <>
-            <form onSubmit={filterPeople}>
-                <div>
-                    filter shown with
-                    <input value={searchInfo} onChange={handleFilter} />
-                </div>
-            </form>
-        </>
+        <div>
+            filter shown with
+            <input value={filter} onChange={({ target }) => setFilter(target.value)}/>
+        </div>
     )
 }
     
