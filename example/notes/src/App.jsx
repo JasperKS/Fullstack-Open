@@ -56,6 +56,25 @@ const App = () => {
     setNewNote(event.target.value);
   }
 
+  const deleteNote = (id) => {
+    const note = notes.find(n => n.id === id);
+
+    if (window.confirm(`Do you really want to delete this note?`)) {
+      noteService
+        .del(id)
+        .then(() => {
+          setNotes(notes.filter(n => n.id != id))
+          console.log('deleted')
+        })
+        .catch(error => {
+          setErrorMessage (`Note '${note.content}' was already removed from server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
+    }
+  }
+
   const notesToShow = showAll
     ? notes
     : notes.filter(note => note.important)
@@ -74,7 +93,8 @@ const App = () => {
           <Note 
             key={note.id} 
             note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}/>
+            toggleImportance={() => toggleImportanceOf(note.id)}
+            deleteNote={() => deleteNote(note.id)}/>
         )}
       </ul>
       <form onSubmit={addNote}>
