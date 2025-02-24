@@ -66,6 +66,14 @@ const App = () => {
           setNotif(null)
         }, 5000)
       })
+      .catch(error => {
+        setSuccess(false);
+        setNotif('Lenght of name must be at least 3 characters')
+        setTimeout(() => {
+          setNotif(null)
+        }, 5000)
+        console.log(error.response.data.error)
+      })
     }
   setNewName("");
   setNewNumber("");  
