@@ -68,7 +68,7 @@ const App = () => {
       })
       .catch(error => {
         setSuccess(false);
-        setNotif('Lenght of name must be at least 3 characters')
+        setNotif(error.response.data.error)
         setTimeout(() => {
           setNotif(null)
         }, 5000)
