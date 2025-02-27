@@ -46,11 +46,11 @@ const App = () => {
           })
           .catch(error => {
             setSuccess(false);
-            setNotif(`Information of ${newName} has already been removed from the server`)
+            setNotif(error.response.data.error)
             setTimeout(() => {
               setNotif(null)
             }, 5000)
-            setPersons(persons.filter(person => person.id !== id))
+            console.log(error.response.data.error)
           })
 
       }
