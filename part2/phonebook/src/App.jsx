@@ -119,7 +119,6 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <Persons people={personsToShow} deletePerson={deletePerson} />
-      <div>debug: {newName}</div>
     </div>
   );
 };
